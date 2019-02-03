@@ -1,3 +1,10 @@
+var currentSettings = {
+  branches: 'goodies',
+  failed: 'shit',
+  success: 'rock on',
+  succeeded: 'you rule!'
+};
+
 function throttle(func, limit) {
   var lastFunc;
   var lastRan;
@@ -29,7 +36,6 @@ function shouldSkipNode(node) {
 };
 
 function walkPage() {
-  console.log("Walking the page...");
   walk(document.body);
 }
 
@@ -59,7 +65,6 @@ function guessCircleCiNodeType(node) {
   if (node.parentNode.tagName == "A" && node.parentNode.href.match(/\/workflow-run\/.*$/)) {
     return WORKFLOWS_STATUS;
   }
-
 }
 
 function walk(node)
@@ -107,15 +112,15 @@ function getStatusFromNode(node) {
 };
 
 function replaceIcon(node, status) {
+  // switch(status) {
+  // case "failed":
+  //   node.innerHTML = "FAIL ICON";
+  //   break;
+  // case "success":
+  //   node.innerHTML = "SUCCESS ICON"
+  //   break;
+  // }
   return;
-  switch(status) {
-  case "failed":
-    node.innerHTML = "FAIL ICON";
-    break;
-  case "success":
-    node.innerHTML = "SUCCESS ICON"
-    break;
-  }
 }
 
 function handleStatusIcon(node) {
@@ -129,13 +134,20 @@ function handleText(textNode)
 {
   var v = textNode.nodeValue;
 
-  v = v.replace(/\bbranches\b/ig, "goodies");
-  v = v.replace(/\bbranch\b/ig, "stuff");
-  v = v.replace(/\bfailed\b/ig, "shit");
-  v = v.replace(/\bsuccess\b/ig, "rock on");
-  v = v.replace(/\bsucceeded\b/ig, "you rule!");
+  v = v.replace(/\bbranches\b/ig, currentSettings.branches);
+  v = v.replace(/\bfailed\b/ig, currentSettings.failed);
+  v = v.replace(/\bsuccess\b/ig, currentSettings.success);
+  v = v.replace(/\bsucceeded\b/ig, currentSettings.succeeded);
 
   textNode.nodeValue = v;
 }
 
-document.addEventListener("DOMNodeInserted", throttle(walkPage, 750), false);
+document.addEventListener("DOMNodeInserted", throttle(
+  function() {
+    readDataFromStorage(function(data) {
+      currentSettings = data;
+      walkPage();
+    });
+  },
+  750
+), false);

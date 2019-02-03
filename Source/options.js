@@ -6,16 +6,16 @@ function getFormData() {
   var form = getForm();
   return({
     success: form.querySelector("#successReplacement").value,
+    succeeded: form.querySelector("#succeededReplacement").value,
     failed: form.querySelector("#failedReplacement").value,
-    branch: form.querySelector("#branchReplacement").value
+    branches: form.querySelector("#branchesReplacement").value
   });
 }
 
-function setFormData(data) {
+function setFormData(settings) {
   var form = getForm();
-  var settings = data.circlePrettifierData;
 
-  ["success", "failed", "branch"].forEach( function(key) {
+  ["succeeded", "success", "failed", "branches"].forEach( function(key) {
     var value = settings[key];
     if (value) {
       var input = form.querySelector("#" + key + "Replacement");
@@ -27,7 +27,7 @@ function setFormData(data) {
 }
 
 function loadOptions() {
-  chrome.storage.sync.get('circlePrettifierData', setFormData);
+  readDataFromStorage(setFormData);
 }
 
 function saveOptions(e) {

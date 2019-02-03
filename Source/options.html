@@ -106,14 +106,20 @@
       <div id="circlePrettifier__status"></div>
       <div class="circlePrettifier__inputGroup">
         <label class="circlePrettifier__inputLabel">
-          <span>Success/Succeeded</span>
+          <span>Success</span>
           <input type="text" name="success" id="successReplacement" />
         </label>
       </div>
       <div class="circlePrettifier__inputGroup">
         <label class="circlePrettifier__inputLabel">
+          <span>Succeeded</span>
+          <input type="text" name="succeeded" id="succeededReplacement" />
+        </label>
+      </div>
+      <div class="circlePrettifier__inputGroup">
+        <label class="circlePrettifier__inputLabel">
           <span>
-            Failed/Failure
+            Failed
           </span>
           <input type="text" name="failed" id="failedReplacement" />
         </label>
@@ -121,16 +127,16 @@
       <div class="circlePrettifier__inputGroup">
         <label class="circlePrettifier__inputLabel">
           <span>
-            Branch/Branches
+            Branches
           </span>
-          <input type="text" name="branches" id="branchReplacement" />
+          <input type="text" name="branches" id="branchesReplacement" />
         </label>
       </div>
       <div class="circlePrettifier__actions">
         <button class="circlePrettifier__submitButton circlePrettifier__button" type="submit" id="save">Save</button>
       </div>
     </form>
-
+    <script src="storage.js"></script>
     <script src="options.js"></script>
   </body>
 </html>
