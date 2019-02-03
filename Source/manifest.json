@@ -1,15 +1,18 @@
 {
-	"manifest_version": 2,
-	"name": "Cloud To Butt",
-	"version": "1.0",
-	"description": "Replaces the text 'the cloud' with 'my butt'.",
-	"content_scripts": 
-	[
-		{
-			"matches": ["*://*/*"],
-			"js": ["content_script.js"],
-			"run_at": "document_end"
-		}
-	]
+  "manifest_version": 2,
+  "name": "Circle CI Prettifier",
+  "version": "0.1",
+  "description": "Prettifies your CircleCI Jobs and Workflows with custom messaging",
+  "options_page": "options.html",
+  "permissions": [
+    "storage"
+  ],
+  "content_scripts":
+  [
+    {
+      "matches": ["https://circleci.com/gh/*","https://circleci.com/dashboard/*"],
+      "js": ["content_script.js"],
+      "run_at": "document_end"
+    }
+  ]
 }
-

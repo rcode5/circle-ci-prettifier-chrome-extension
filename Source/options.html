@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+  <head><title>CircleCI Prettifier Options</title></head>
+  <style>
+
+   html {
+     font-family: sans-serif;
+     color: #333;
+   }
+   body {
+     display: flex;
+     align-items: center;
+     justify-content: center;
+     margin: auto;
+   }
+
+   #circlePrettifier__status {
+     display: flex;
+     align-items: center;
+     justify-content: center;
+     width: 100%;
+     max-width: 450px;
+   }
+
+   #circlePrettifier__optionsForm {
+     width: 50%;
+     min-width: 350px;
+
+     display: flex;
+     flex-direction: column;
+     align-items: flex-start;
+     justify-content: flex-start;
+   }
+
+   .circlePrettifier__inputGroup {
+     margin-bottom: 20px;
+     width: 100%;
+     max-width: 450px;
+   }
+
+   .circlePrettifier__inputLabel {
+     display: flex;
+     flex-direction: row;
+     align-items: center;
+     justify-content: flex-start;
+     flex: 1;
+   }
+
+   .circlePrettifier__actions {
+     display: flex;
+     align-items: center;
+     justify-content: center;
+     width: 100%;
+     max-width: 450px;
+   }
+
+   .circlePrettifier__inputLabel span {
+     font-size: x-small;
+     text-transform: uppercase;
+     font-weight: bold;
+     flex-basis: 200px;
+     white-space: nowrap;
+   }
+
+   .circlePrettifier__inputLabel span::after {
+     content: " \2192";
+     text-align: right;
+   }
+
+   .circlePrettifier__inputLabel input {
+     flex-grow: 1;
+     width: 100%;
+     margin-left: 10px;
+     border: none;
+     border-bottom: 1px solid #ccc;
+   }
+
+   .circlePrettifier__button {
+     color: #fff;
+     background-color: #444;
+     border: 1px solid transparent;
+     padding: 8px 15px;
+     text-transform: uppercase;
+   }
+
+   .circlePrettifier__button:hover,
+   .circlePrettifier__button.hover {
+     border: 1px solid #333;
+     background-color: #555;
+   }
+
+   .circlePrettifier__button:active,
+   .circlePrettifier__button.active {
+     border: 1px solid #333;
+     background-color: #666;
+   }
+
+   h3 {
+     text-transform: uppercase;
+     font-size: normal;
+   }
+  </style>
+  <body>
+    <form id="circlePrettifier__optionsForm">
+      <h3>Update CircleCI status messages</h3>
+      <div id="circlePrettifier__status"></div>
+      <div class="circlePrettifier__inputGroup">
+        <label class="circlePrettifier__inputLabel">
+          <span>Success/Succeeded</span>
+          <input type="text" name="success" id="successReplacement" />
+        </label>
+      </div>
+      <div class="circlePrettifier__inputGroup">
+        <label class="circlePrettifier__inputLabel">
+          <span>
+            Failed/Failure
+          </span>
+          <input type="text" name="failed" id="failedReplacement" />
+        </label>
+      </div>
+      <div class="circlePrettifier__inputGroup">
+        <label class="circlePrettifier__inputLabel">
+          <span>
+            Branch/Branches
+          </span>
+          <input type="text" name="branches" id="branchReplacement" />
+        </label>
+      </div>
+      <div class="circlePrettifier__actions">
+        <button class="circlePrettifier__submitButton circlePrettifier__button" type="submit" id="save">Save</button>
+      </div>
+    </form>
+
+    <script src="options.js"></script>
+  </body>
+</html>
