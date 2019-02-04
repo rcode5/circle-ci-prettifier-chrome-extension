@@ -12,6 +12,7 @@
     {
       "matches": ["https://circleci.com/gh/*","https://circleci.com/dashboard/*"],
       "js": [
+        "helpers.js",
         "storage.js",
         "content_script.js"
       ],

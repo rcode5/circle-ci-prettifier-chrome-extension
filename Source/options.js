@@ -27,14 +27,12 @@ function setFormData(settings) {
 }
 
 function loadOptions() {
-  readDataFromStorage(setFormData);
+  CircleCIPrettifierStorage.readData(setFormData);
 }
 
 function saveOptions(e) {
   e.preventDefault();
-
-  chrome.storage.sync.set(
-    {circlePrettifierData: getFormData()},
+  CircleCIPrettifierStorage.writeData( getFormData(),
     function() {
       // Update status to let user know options were saved.
       var status = document.getElementById('circlePrettifier__status');

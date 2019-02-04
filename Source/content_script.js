@@ -1,152 +1,116 @@
-var currentSettings = {
-  branches: 'goodies',
-  failed: 'shit',
-  success: 'rock on',
-  succeeded: 'you rule!'
+var CircleCIPrettifier = {
+  JOBS_STATUS: "JOBS_STATUS",
+  WORKFLOWS_STATUS: "WORKFLOWS_STATUS",
+  defaultSettings: {
+    branches: 'goodies',
+    failed: 'shit',
+    success: 'rock on',
+    succeeded: 'you rule!'
+  },
+  currentSettings: {},
+  shouldSkipNode: function(node) {
+    try {
+      return (node.tagName.toLowerCase() == 'input') ||
+        (node.tagName.toLowerCase() == 'textarea');
+    } catch(ex) {
+      return false;
+    }
+  },
+  walkPage: function() {
+    CircleCIPrettifier.walk(document.body);
+  },
+  stepIn: function(node) {
+    var child, next;
+    child = node.firstChild;
+    while ( child )
+    {
+      next = child.nextSibling;
+      CircleCIPrettifier.walk(child);
+      child = next;
+    }
+  },
+  guessCircleCiNodeType: function(node) {
+    if (node.tagName == "DIV" && (node.classList.contains("status-icon"))) {
+      return CircleCIPrettifier.JOBS_STATUS;
+    }
+    if (node.parentNode.tagName == "A" && node.parentNode.href.match(/\/workflow-run\/.*$/)) {
+      return CircleCIPrettifier.WORKFLOWS_STATUS;
+    }
+  },
+  walk: function(node) {
+    // I stole this function from here:
+    // http://is.gd/mwZp7E
+    if (CircleCIPrettifier.shouldSkipNode(node)) {
+      return;
+    }
+
+    switch ( node.nodeType )
+    {
+      case Node.DOCUMENT_NODE:
+      case Node.DOCUMENT_FRAGMENT_NODE:
+      CircleCIPrettifier.stepIn(node);
+      break;
+      case Node.ELEMENT_NODE:
+      switch (CircleCIPrettifier.guessCircleCiNodeType(node)) {
+      case CircleCIPrettifier.WORKFLOWS_STATUS:
+      case CircleCIPrettifier.JOBS_STATUS:
+        CircleCIPrettifier.handleStatusIcon(node);
+      }
+      CircleCIPrettifier.stepIn(node);
+      break;
+      case Node.TEXT_NODE:
+      CircleCIPrettifier.handleText(node);
+      break;
+    }
+  },
+  getStatusFromNode: function(node) {
+    var title;
+    if (title = node.parentNode.title) {
+      return title.toLowerCase();
+    }
+    if (node.tagName == "SPAN") {
+      if (node.parentNode.innerHTML.match(/succe/i)) {
+        return "success";
+      }
+      if (node.parentNode.innerHTML.match(/faile/i)) {
+        return "failed";
+      }
+    }
+    return null;
+  },
+  replaceIcon: function(node, status) { return; },
+  handleStatusIcon: function(node) {
+    var status = CircleCIPrettifier.getStatusFromNode(node);
+    if (status) {
+      CircleCIPrettifier.replaceIcon(node, status);
+    }
+  },
+  handleText: function(textNode) {
+    var v = textNode.nodeValue;
+    var settings = CircleCIPrettifier.currentSettings;
+
+    v = v.replace(/\bbranches\b/ig, settings.branches);
+    v = v.replace(/\bfailed\b/ig, settings.failed);
+    v = v.replace(/\bsuccess\b/ig, settings.success);
+    v = v.replace(/\bsucceeded\b/ig, settings.succeeded);
+
+    textNode.nodeValue = v;
+  },
+  mergeSettings: function(settings) {
+    Object.keys(settings).forEach(function(key) {
+      CircleCIPrettifier.currentSettings[key] = settings[key] ||
+        CircleCIPrettifier.currentSettings[key] ||
+        CircleCIPrettifier.defaultSettings[key];
+    });
+    console.log(settings, CircleCIPrettifier.defaultSettings, CircleCIPrettifier.currentSettings);
+  }
 };
 
-function throttle(func, limit) {
-  var lastFunc;
-  var lastRan;
-  return function() {
-    var context = this;
-    var args = arguments;
-    if (!lastRan) {
-      func.apply(context, args);
-      lastRan = Date.now();
-    } else {
-      clearTimeout(lastFunc);
-      lastFunc = setTimeout(function() {
-        if ((Date.now() - lastRan) >= limit) {
-          func.apply(context, args);
-          lastRan = Date.now();
-        }
-      }, limit - (Date.now() - lastRan));
-    }
-  };
-};
-
-function shouldSkipNode(node) {
-  try {
-    return (node.tagName.toLowerCase() == 'input') ||
-      (node.tagName.toLowerCase() == 'textarea');
-  } catch(ex) {
-    return false;
-  }
-};
-
-function walkPage() {
-  walk(document.body);
-}
-
-function stepIn(node) {
-  var child, next;
-  child = node.firstChild;
-  while ( child )
-  {
-    next = child.nextSibling;
-    walk(child);
-    child = next;
-  }
-}
-
-function isStatusIcon(node) {
-  // on jobs page
-  return false;
-}
-
-var JOBS_STATUS="JOBS_STATUS";
-var WORKFLOWS_STATUS="WORKFLOWS_STATUS";
-
-function guessCircleCiNodeType(node) {
-  if (node.tagName == "DIV" && (node.classList.contains("status-icon"))) {
-    return JOBS_STATUS;
-  }
-  if (node.parentNode.tagName == "A" && node.parentNode.href.match(/\/workflow-run\/.*$/)) {
-    return WORKFLOWS_STATUS;
-  }
-}
-
-function walk(node)
-{
-  // I stole this function from here:
-  // http://is.gd/mwZp7E
-  if (shouldSkipNode(node)) {
-    return;
-  }
-
-  switch ( node.nodeType )
-  {
-    case Node.DOCUMENT_NODE:
-    case Node.DOCUMENT_FRAGMENT_NODE:
-    stepIn(node);
-    break;
-    case Node.ELEMENT_NODE:
-    switch (guessCircleCiNodeType(node)) {
-    case WORKFLOWS_STATUS:
-    case JOBS_STATUS:
-      handleStatusIcon(node);
-    }
-    stepIn(node);
-    break;
-    case Node.TEXT_NODE:
-    handleText(node);
-    break;
-  }
-}
-
-function getStatusFromNode(node) {
-  var title;
-  if (title = node.parentNode.title) {
-    return title.toLowerCase();
-  }
-  if (node.tagName == "SPAN") {
-    if (node.parentNode.innerHTML.match(/succe/i)) {
-      return "success";
-    }
-    if (node.parentNode.innerHTML.match(/faile/i)) {
-      return "failed";
-    }
-  }
-  return null;
-};
-
-function replaceIcon(node, status) {
-  // switch(status) {
-  // case "failed":
-  //   node.innerHTML = "FAIL ICON";
-  //   break;
-  // case "success":
-  //   node.innerHTML = "SUCCESS ICON"
-  //   break;
-  // }
-  return;
-}
-
-function handleStatusIcon(node) {
-  var status = getStatusFromNode(node);
-  if (status) {
-    replaceIcon(node, status);
-  }
-}
-
-function handleText(textNode)
-{
-  var v = textNode.nodeValue;
-
-  v = v.replace(/\bbranches\b/ig, currentSettings.branches);
-  v = v.replace(/\bfailed\b/ig, currentSettings.failed);
-  v = v.replace(/\bsuccess\b/ig, currentSettings.success);
-  v = v.replace(/\bsucceeded\b/ig, currentSettings.succeeded);
-
-  textNode.nodeValue = v;
-}
-
-document.addEventListener("DOMNodeInserted", throttle(
+document.addEventListener("DOMNodeInserted", CircleCIPrettifierHelpers.throttle(
   function() {
-    readDataFromStorage(function(data) {
-      currentSettings = data;
-      walkPage();
+    CircleCIPrettifierStorage.readData(function(data) {
+      CircleCIPrettifier.mergeSettings(data);
+      CircleCIPrettifier.walkPage();
     });
   },
   750

@@ -8,24 +8,30 @@
      color: #333;
    }
    body {
-     display: flex;
-     align-items: center;
-     justify-content: center;
      margin: auto;
    }
 
-   #circlePrettifier__status {
+   main {
      display: flex;
      align-items: center;
      justify-content: center;
+     flex-direction: column;
+     margin: auto;
+     width: 50%;
+     max-width: 500px;
+     min-width: 350px;
+   }
+
+   #circlePrettifier__status {
      width: 100%;
-     max-width: 450px;
+     display: flex;
+     align-items: center;
+     justify-content: center;
    }
 
    #circlePrettifier__optionsForm {
-     width: 50%;
-     min-width: 350px;
-
+     margin-top: 20px;
+     width: 100%;
      display: flex;
      flex-direction: column;
      align-items: flex-start;
@@ -35,7 +41,6 @@
    .circlePrettifier__inputGroup {
      margin-bottom: 20px;
      width: 100%;
-     max-width: 450px;
    }
 
    .circlePrettifier__inputLabel {
@@ -51,7 +56,6 @@
      align-items: center;
      justify-content: center;
      width: 100%;
-     max-width: 450px;
    }
 
    .circlePrettifier__inputLabel span {
@@ -95,47 +99,95 @@
      background-color: #666;
    }
 
+   .circlePrettifier__finePrint {
+     font-size: x-small;
+   }
+
+   .circlePrettifier__finePrint pre {
+     margin: 0.5em 0;
+   }
+
+   .circlePrettifier__instructions {
+     margin: 20px 0;
+     padding: 20px 0;
+     border-top: 1px solid #ccc;
+     border-bottom: 1px solid #ccc;
+   }
+
+   .circlePrettifier__finePrint ul,
+   .circlePrettifier__finePrint li
+   {
+     margin: 0;
+     list-style: none;
+     padding: 0;
+   }
+
    h3 {
      text-transform: uppercase;
      font-size: normal;
    }
   </style>
   <body>
-    <form id="circlePrettifier__optionsForm">
+    <main>
       <h3>Update CircleCI status messages</h3>
-      <div id="circlePrettifier__status"></div>
-      <div class="circlePrettifier__inputGroup">
-        <label class="circlePrettifier__inputLabel">
-          <span>Success</span>
-          <input type="text" name="success" id="successReplacement" />
-        </label>
+      <div class="circlePrettifier__instructions">
+        <p>
+          This extension allows you to update the text used on CircleCI
+          for failed and successful builds and for the word "branches".
+        </p>
+        <p>
+          Simply add your replacement values in the form below, click "Save"
+          and go back to CircleCI Jobs or Workflows pages to see your
+          prettier CircleCI dashboard.
+        </p>
+        <div class="circlePrettifier__finePrint">
+          <p>
+            This script is only active on pages that match
+          </p>
+          <ul>
+            <li><pre>https://circleci.com/gh/*</pre></li>
+            <li><pre>https://circleci.com/dashboard/*</pre></li>
+          </ul>
+          <p>
+            So if you're not using Github projects it may not be as useful.
+          </p>
+        </div>
       </div>
-      <div class="circlePrettifier__inputGroup">
-        <label class="circlePrettifier__inputLabel">
-          <span>Succeeded</span>
-          <input type="text" name="succeeded" id="succeededReplacement" />
-        </label>
-      </div>
-      <div class="circlePrettifier__inputGroup">
-        <label class="circlePrettifier__inputLabel">
-          <span>
-            Failed
-          </span>
-          <input type="text" name="failed" id="failedReplacement" />
-        </label>
-      </div>
-      <div class="circlePrettifier__inputGroup">
-        <label class="circlePrettifier__inputLabel">
-          <span>
-            Branches
-          </span>
-          <input type="text" name="branches" id="branchesReplacement" />
-        </label>
-      </div>
-      <div class="circlePrettifier__actions">
-        <button class="circlePrettifier__submitButton circlePrettifier__button" type="submit" id="save">Save</button>
-      </div>
-    </form>
+      <form id="circlePrettifier__optionsForm">
+        <div id="circlePrettifier__status"></div>
+        <div class="circlePrettifier__inputGroup">
+          <label class="circlePrettifier__inputLabel">
+            <span>Success</span>
+            <input type="text" name="success" id="successReplacement" />
+          </label>
+        </div>
+        <div class="circlePrettifier__inputGroup">
+          <label class="circlePrettifier__inputLabel">
+            <span>Succeeded</span>
+            <input type="text" name="succeeded" id="succeededReplacement" />
+          </label>
+        </div>
+        <div class="circlePrettifier__inputGroup">
+          <label class="circlePrettifier__inputLabel">
+            <span>
+              Failed
+            </span>
+            <input type="text" name="failed" id="failedReplacement" />
+          </label>
+        </div>
+        <div class="circlePrettifier__inputGroup">
+          <label class="circlePrettifier__inputLabel">
+            <span>
+              Branches
+            </span>
+            <input type="text" name="branches" id="branchesReplacement" />
+          </label>
+        </div>
+        <div class="circlePrettifier__actions">
+          <button class="circlePrettifier__submitButton circlePrettifier__button" type="submit" id="save">Save</button>
+        </div>
+      </form>
+    </main>
     <script src="storage.js"></script>
     <script src="options.js"></script>
   </body>
