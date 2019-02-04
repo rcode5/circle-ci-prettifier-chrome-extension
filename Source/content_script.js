@@ -13,8 +13,14 @@ var CircleCIPrettifier = {
   currentSettings: {},
   shouldSkipNode: function(node) {
     try {
-      return (node.tagName.toLowerCase() == 'input') ||
-        (node.tagName.toLowerCase() == 'textarea');
+      var tagName = node.tagName;
+      if (!tagName) {
+        // nodes without tag names are the text nodes
+        // don't skip these
+        return false;
+      }
+      var tag = node.tagName.toLowerCase();
+      return ["input","textarea","pre","code"].indexOf(tag) !== -1
     } catch(ex) {
       return false;
     }
@@ -113,6 +119,7 @@ var CircleCIPrettifier = {
     textNode.nodeValue = v;
   },
   mergeSettings: function(settings) {
+    settings = settings || {};
     Object.keys(CircleCIPrettifier.defaultSettings).forEach(function(key) {
       CircleCIPrettifier.currentSettings[key] = settings[key] ||
         CircleCIPrettifier.currentSettings[key] ||

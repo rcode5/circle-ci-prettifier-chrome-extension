@@ -13,9 +13,9 @@ function getForm() {
 
 function getFormData() {
   var form = getForm();
-
   return CIRCLE_CI_PRETTIFIER_FIELDS.reduce(function(memo, key) {
     memo[key] = form.querySelector("#" + key).value;
+    return memo;
   }, {});
 }
 
