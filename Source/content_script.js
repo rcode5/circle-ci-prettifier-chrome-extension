@@ -5,6 +5,8 @@ var CircleCIPrettifier = {
     branches: 'goodies',
     canceled: 'nevermind',
     failed: 'rats',
+    failing: 'signs point to no',
+    not_running: 'picking my nose',
     queued: 'here we go',
     running: 'working on it',
     succeeded: 'you rule!',
@@ -52,7 +54,6 @@ var CircleCIPrettifier = {
     if (CircleCIPrettifier.shouldSkipNode(node)) {
       return;
     }
-
     switch ( node.nodeType )
     {
       case Node.DOCUMENT_NODE:
@@ -105,11 +106,13 @@ var CircleCIPrettifier = {
       [/\bbranches\b/ig, settings.branches],
       [/\bcanceled\b/ig, settings.canceled],
       [/\bfailed\b/ig, settings.failed],
+      [/\bfailing\b/ig, settings.failing],
       [/\bqueued\b/ig, settings.queued],
+      [/\bnot\s+running\b/ig, settings.not_running],
       [/\brunning\b/ig, settings.running],
       [/\bsucceeded\b/ig, settings.succeeded],
-      [/\bsuccess\b/ig, settings.success],
       [/\bsuccessful\b/ig, settings.succeeded],
+      [/\bsuccess\b/ig, settings.success],
     ];
     var len = matches.length;
     var ii = 0;

@@ -2,6 +2,8 @@ var CIRCLE_CI_PRETTIFIER_FIELDS = [
   "branches",
   "canceled",
   "failed",
+  "failing",
+  "not_running",
   "queued",
   "running",
   "succeeded",
