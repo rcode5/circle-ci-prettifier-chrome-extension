@@ -3,9 +3,12 @@ var CircleCIPrettifier = {
   WORKFLOWS_STATUS: "WORKFLOWS_STATUS",
   defaultSettings: {
     branches: 'goodies',
-    failed: 'shit',
+    canceled: 'nevermind',
+    failed: 'rats',
+    queued: 'here we go',
+    running: 'working on it',
+    succeeded: 'you rule!',
     success: 'rock on',
-    succeeded: 'you rule!'
   },
   currentSettings: {},
   shouldSkipNode: function(node) {
@@ -88,21 +91,33 @@ var CircleCIPrettifier = {
   handleText: function(textNode) {
     var v = textNode.nodeValue;
     var settings = CircleCIPrettifier.currentSettings;
-
-    v = v.replace(/\bbranches\b/ig, settings.branches);
-    v = v.replace(/\bfailed\b/ig, settings.failed);
-    v = v.replace(/\bsuccess\b/ig, settings.success);
-    v = v.replace(/\bsucceeded\b/ig, settings.succeeded);
-
+    var filter = /branches|running|failed|succe|queue|cancel/i;
+    if (!v.match(filter)) {
+      return;
+    }
+    var matches = [
+      [/\bbranches\b/ig, settings.branches],
+      [/\bcanceled\b/ig, settings.canceled],
+      [/\bfailed\b/ig, settings.failed],
+      [/\bqueued\b/ig, settings.queued],
+      [/\brunning\b/ig, settings.running],
+      [/\bsucceeded\b/ig, settings.succeeded],
+      [/\bsuccess\b/ig, settings.success],
+      [/\bsuccessful\b/ig, settings.succeeded],
+    ];
+    var len = matches.length;
+    var ii = 0;
+    for(; ii < len; ++ii) {
+      v = v.replace(matches[ii][0], matches[ii][1]);
+    }
     textNode.nodeValue = v;
   },
   mergeSettings: function(settings) {
-    Object.keys(settings).forEach(function(key) {
+    Object.keys(CircleCIPrettifier.defaultSettings).forEach(function(key) {
       CircleCIPrettifier.currentSettings[key] = settings[key] ||
         CircleCIPrettifier.currentSettings[key] ||
         CircleCIPrettifier.defaultSettings[key];
     });
-    console.log(settings, CircleCIPrettifier.defaultSettings, CircleCIPrettifier.currentSettings);
   }
 };
 

@@ -1,24 +1,31 @@
+var CIRCLE_CI_PRETTIFIER_FIELDS = [
+  "branches",
+  "canceled",
+  "failed",
+  "queued",
+  "running",
+  "succeeded",
+  "success" ];
+
 function getForm() {
   return document.getElementById('circlePrettifier__optionsForm');
 }
 
 function getFormData() {
   var form = getForm();
-  return({
-    success: form.querySelector("#successReplacement").value,
-    succeeded: form.querySelector("#succeededReplacement").value,
-    failed: form.querySelector("#failedReplacement").value,
-    branches: form.querySelector("#branchesReplacement").value
-  });
+
+  return CIRCLE_CI_PRETTIFIER_FIELDS.reduce(function(memo, key) {
+    memo[key] = form.querySelector("#" + key).value;
+  }, {});
 }
 
 function setFormData(settings) {
   var form = getForm();
 
-  ["succeeded", "success", "failed", "branches"].forEach( function(key) {
+  CIRCLE_CI_PRETTIFIER_FIELDS.forEach( function(key) {
     var value = settings[key];
     if (value) {
-      var input = form.querySelector("#" + key + "Replacement");
+      var input = form.querySelector("#" + key);
       if (input) {
         input.value = value;
       }
