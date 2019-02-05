@@ -1,12 +1,29 @@
 {
   "manifest_version": 2,
   "name": "Circle CI Prettifier",
+  "author": "Jon Rogers <jon@rcode5.com>",
+  "homepage_url": "https://github.com/rcode5/circle-ci-prettifier-chrome-extension",
   "version": "0.1",
   "description": "Prettifies your CircleCI Jobs and Workflows with custom messaging",
-  "options_page": "options.html",
   "permissions": [
     "storage"
   ],
+  "browser_action": {
+    "default_icon": "icons/icon48.png",
+    "default_popup": "options.html"
+  },
+  "permissions": [
+    "https://circleci.com/*",
+    "storage"
+  ],
+  "options_ui": {
+    "page": "options.html",
+    "chrome_style": true
+  },
+  "icons": {
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
   "content_scripts":
   [
     {

@@ -23,7 +23,7 @@ function getFormData() {
 
 function setFormData(settings) {
   var form = getForm();
-
+  settings = settings || {};
   CIRCLE_CI_PRETTIFIER_FIELDS.forEach( function(key) {
     var value = settings[key];
     if (value) {

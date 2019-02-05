@@ -18,6 +18,8 @@
      flex-direction: column;
      margin: auto;
      width: 50%;
+     min-width: 410px;
+     padding: 20px 40px 40px;
      max-width: 500px;
      min-width: 350px;
    }
@@ -80,23 +82,30 @@
    }
 
    .circlePrettifier__button {
-     color: #fff;
-     background-color: #444;
-     border: 1px solid transparent;
+     /* !important to override browser popup rules :enabled:hover:-webkit-any(input) */
+     outline: none;
+     border-radius: 0;
+     box-shadow: none !important;
+     text-shadow: none !important;
+     color: #fff !important;
+     background-image: none !important;
+     background-color: #444 !important;
+     border: 1px solid transparent !important;
      padding: 8px 15px;
      text-transform: uppercase;
    }
 
    .circlePrettifier__button:hover,
    .circlePrettifier__button.hover {
-     border: 1px solid #333;
-     background-color: #555;
+     box-shadow: none !important;
+     border: 1px solid #333 !important;
+     background-color: #555 !important;
    }
 
    .circlePrettifier__button:active,
    .circlePrettifier__button.active {
-     border: 1px solid #333;
-     background-color: #666;
+     border: 1px solid #333 !important;
+     background-color: #666 !important;
    }
 
    .circlePrettifier__finePrint {
