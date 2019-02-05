@@ -131,7 +131,7 @@ var CircleCIPrettifier = {
   }
 };
 
-document.addEventListener("DOMNodeInserted", CircleCIPrettifierHelpers.debounce(
+var debouncedWalker = CircleCIPrettifierHelpers.debounce(
   function() {
     CircleCIPrettifierStorage.readData(function(data) {
       CircleCIPrettifier.mergeSettings(data);
@@ -139,4 +139,7 @@ document.addEventListener("DOMNodeInserted", CircleCIPrettifierHelpers.debounce(
     });
   },
   750
-), false);
+);
+
+document.addEventListener("DOMNodeInserted", debouncedWalker, false);
+document.addEventListener("visibilitychange", debouncedWalker, false);
