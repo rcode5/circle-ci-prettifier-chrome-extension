@@ -1,4 +1,18 @@
 var CircleCIPrettifierHelpers = {
+  debounce: function(func, delay) {
+    var timerId = void 0;
+    return function () {
+      var args = arguments;
+
+      if (timerId) {
+        clearTimeout(timerId);
+      }
+      timerId = setTimeout(function () {
+        func.apply(undefined, args);
+        timerId = null;
+      }, delay);
+    };
+  },
   throttle: function(func, limit) {
     var lastFunc;
     var lastRan;

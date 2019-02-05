@@ -98,7 +98,7 @@ var CircleCIPrettifier = {
   handleText: function(textNode) {
     var v = textNode.nodeValue;
     var settings = CircleCIPrettifier.currentSettings;
-    var filter = /branches|running|failed|succe|queue|cancel/i;
+    var filter = /branch|run|fail|succe|queue|cancel/i;
     if (!v.match(filter)) {
       return;
     }
@@ -131,7 +131,7 @@ var CircleCIPrettifier = {
   }
 };
 
-document.addEventListener("DOMNodeInserted", CircleCIPrettifierHelpers.throttle(
+document.addEventListener("DOMNodeInserted", CircleCIPrettifierHelpers.debounce(
   function() {
     CircleCIPrettifierStorage.readData(function(data) {
       CircleCIPrettifier.mergeSettings(data);
