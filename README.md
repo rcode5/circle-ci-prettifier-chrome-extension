@@ -35,4 +35,4 @@ After clicking Save, check out your builds on Circle.
 
 ### Credits
 
-Originally inspired by [Cloud-to-Butt extension][https://github.com/panicsteve/cloud-to-butt]
+Originally inspired by [Cloud-to-Butt extension](https://github.com/panicsteve/cloud-to-butt)
